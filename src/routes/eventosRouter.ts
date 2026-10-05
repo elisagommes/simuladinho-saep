@@ -5,9 +5,9 @@ const router = Router();
 // Cadastrar um evento novo
 router.post("/", async (req: Request, res: Response) => {
     try {
-        const { nome, descricao, palestranteId, local, data } = req.body;
+        const { nome, descricao, palestrante_id, local, data } = req.body;
  
-        if ( !nome || !descricao || !palestranteId || !local || !data ) {
+        if ( !nome || !descricao || !palestrante_id || !local || !data ) {
             return res.status(400).json({
                 error: "Todos os campos são obrigatórios." });
         }
@@ -19,7 +19,7 @@ router.post("/", async (req: Request, res: Response) => {
                 local,
                 data: new Date(data),
                 palestrantes: {
-                    connect: { id: Number(palestranteId) }
+                    connect: { id: Number(palestrante_id) }
                 }
             }
         });
@@ -64,7 +64,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  
 router.put("/:id", async (req: Request, res: Response) => {
     try {
-        const { nome, descricao, palestranteId, local, data } = req.body;
+        const { nome, descricao, palestrante_id, local, data } = req.body;
  
         const evento = await prisma.evento.update({
             where: { id: Number(req.params.id)},
@@ -73,8 +73,8 @@ router.put("/:id", async (req: Request, res: Response) => {
                 descricao,
                 local,
                 data: data ? new Date(data) : undefined,
-                palestrantes: palestranteId
-                    ? { connect: { id: Number(palestranteId) } }
+                palestrantes: palestrante_id
+                    ? { connect: { id: Number(palestrante_id) } }
                     : undefined
             }
         })
